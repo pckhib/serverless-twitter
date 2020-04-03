@@ -1,0 +1,39 @@
+{
+  "name": "serverless-twitter",
+  "version": "1.0.0",
+  "description": "Twitter clone on AWS using Serverless framework",
+  "main": "handler.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pckhib/serverless-twitter.git"
+  },
+  "keywords": [
+    "serverless",
+    "twitter",
+    "udacity"
+  ],
+  "author": "Patrick Hieber <patrickhieber92@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pckhib/serverless-twitter/issues"
+  },
+  "homepage": "https://github.com/pckhib/serverless-twitter#readme",
+  "dependencies": {
+    "aws-xray-sdk": "^2.5.0",
+    "jsonwebtoken": "^8.5.1",
+    "middy": "^0.34.0",
+    "source-map-support": "^0.5.16",
+    "uuid": "^7.0.3"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.47",
+    "@types/jsonwebtoken": "^8.3.8",
+    "@types/node": "^13.11.0",
+    "aws-sdk": "^2.652.0",
+    "serverless-iam-roles-per-function": "^2.0.2",
+    "serverless-webpack": "^5.3.1",
+    "ts-loader": "^6.2.2",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1"
+  }
+}
