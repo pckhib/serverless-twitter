@@ -20,6 +20,7 @@
   "homepage": "https://github.com/pckhib/serverless-twitter#readme",
   "dependencies": {
     "aws-xray-sdk": "^2.5.0",
+    "axios": "^0.19.2",
     "jsonwebtoken": "^8.5.1",
     "middy": "^0.34.0",
     "source-map-support": "^0.5.16",
