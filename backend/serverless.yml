@@ -14,7 +14,7 @@ provider:
 
   environment:
     TWITTER_TABLE: Twitter-${self:provider.stage}
-    POSTS_INDEX: PostsIndex
+    POST_DATE_INDEX: PostDateIndex
 
 functions:
   Auth:
@@ -61,6 +61,28 @@ functions:
           - xray:PutTelemetryRecords
         Resource: '*'
 
+  UpdatePost:
+    handler: src/lambda/http/updatePost.handler
+    events:
+      - http:
+          method: patch
+          path: posts/{postId}
+          cors: true
+          authorizer: Auth
+          request:
+            schema:
+              application/json: ${file(models/update-post-request.json)}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          -  dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TWITTER_TABLE}
+      - Effect: Allow
+        Action:
+          - xray:PutTraceSegments
+          - xray:PutTelemetryRecords 
+        Resource: '*'
+
 resources:
   Resources:
     GatewayResponseDefault4XX:
@@ -87,16 +109,16 @@ resources:
         KeySchema:
           - AttributeName: userId
             KeyType: HASH
-          - AttributeName: createdAt
+          - AttributeName: postId
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.TWITTER_TABLE}
-        LocalSecondaryIndexes:
-          - IndexName: ${self:provider.environment.POSTS_INDEX}
+        GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.POST_DATE_INDEX}
             KeySchema:
               - AttributeName: userId
                 KeyType: HASH
-              - AttributeName: postId
+              - AttributeName: createdAt
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL

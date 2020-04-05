@@ -3,6 +3,7 @@ import * as uuid from 'uuid'
 import { PostsAccess } from '../dataLayer/postsAccess'
 import { PostItem } from '../models/PostItem'
 import { CreatePostRequest } from '../requests/CreatePostRequest'
+import { UpdatePostRequest } from '../requests/UpdatePostRequest'
 
 import 'source-map-support/register'
 
@@ -22,4 +23,14 @@ export async function createPost(createPostRequest: CreatePostRequest, userId: s
     title: createPostRequest.title,
     text: createPostRequest.text
   })
+}
+
+export async function updatePost(postId: string, userId: string, updatePostRequest: UpdatePostRequest) {
+  return await postsAccess.updatePost(
+    postId,
+    userId,
+    {
+      title: updatePostRequest.title,
+      text: updatePostRequest.text
+    })
 }

@@ -2,6 +2,7 @@ import * as AWS from 'aws-sdk'
 import * as AWSXRay from 'aws-xray-sdk'
 
 import { PostItem } from '../models/PostItem'
+import { PostUpdate } from '../models/PostUpdate'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 
 import 'source-map-support/register'
@@ -33,5 +34,28 @@ export class PostsAccess {
     }).promise()
 
     return postItem
+  }
+
+  async updatePost(postId: string, userId: string, postUpdate: PostUpdate): Promise<PostUpdate> {
+    console.log('Update post', postId, userId, postUpdate)
+
+    await this.docClient.update({
+      TableName:this.twitterTable,
+      Key: {
+        userId: userId,
+        postId: postId
+      },
+      UpdateExpression: 'set #title = :title, #text = :text',
+      ExpressionAttributeNames: {
+        '#title': 'title',
+        '#text': 'text'
+      },
+      ExpressionAttributeValues: {
+        ':title': postUpdate.title,
+        ':text': postUpdate.text
+      }
+    }).promise()
+
+    return postUpdate
   }
 }
