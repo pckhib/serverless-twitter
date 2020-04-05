@@ -1,5 +1,8 @@
+import * as uuid from 'uuid'
+
 import { PostsAccess } from '../dataLayer/postsAccess'
 import { PostItem } from '../models/PostItem'
+import { CreatePostRequest } from '../requests/CreatePostRequest'
 
 import 'source-map-support/register'
 
@@ -7,4 +10,16 @@ const postsAccess = new PostsAccess()
 
 export async function getAllPosts(): Promise<PostItem[]> {
   return postsAccess.getAllPosts()
+}
+
+export async function createPost(createPostRequest: CreatePostRequest, userId: string): Promise<PostItem> {
+  const itemId = uuid.v4()
+
+  return await postsAccess.createPost({
+    userId: userId,
+    postId: itemId,
+    createdAt: new Date().toISOString(),
+    title: createPostRequest.title,
+    text: createPostRequest.text
+  })
 }

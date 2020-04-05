@@ -25,4 +25,13 @@ export class PostsAccess {
     const items = result.Items
     return items as PostItem[]
   }
+
+  async createPost(postItem: PostItem): Promise<PostItem> {
+    await this.docClient.put({
+      TableName: this.twitterTable,
+      Item: postItem
+    }).promise()
+
+    return postItem
+  }
 }

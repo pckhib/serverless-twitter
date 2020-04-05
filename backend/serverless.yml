@@ -39,6 +39,28 @@ functions:
           - xray:PutTelemetryRecords
         Resource: '*'
 
+  CreatePost:
+    handler: src/lambda/http/createPost.handler
+    events:
+      - http:
+          method: post
+          path: posts
+          cors: true
+          authorizer: Auth
+          request:
+            schema:
+              application/json: ${file(models/create-post-request.json)}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TWITTER_TABLE}
+      - Effect: Allow
+        Action:
+          - xray:PutTraceSegments
+          - xray:PutTelemetryRecords
+        Resource: '*'
+
 resources:
   Resources:
     GatewayResponseDefault4XX:
