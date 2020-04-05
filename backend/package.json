@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/pckhib/serverless-twitter#readme",
   "dependencies": {
-    "aws-xray-sdk": "^2.5.0",
+    "aws-xray-sdk": "^2.2.0",
     "axios": "^0.19.2",
     "jsonwebtoken": "^8.5.1",
     "middy": "^0.34.0",
@@ -30,7 +30,7 @@
     "@types/aws-lambda": "^8.10.47",
     "@types/jsonwebtoken": "^8.3.8",
     "@types/node": "^13.11.0",
-    "aws-sdk": "^2.652.0",
+    "aws-sdk": "^2.433.0",
     "serverless-iam-roles-per-function": "^2.0.2",
     "serverless-webpack": "^5.3.1",
     "ts-loader": "^6.2.2",

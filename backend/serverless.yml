@@ -14,10 +14,30 @@ provider:
 
   environment:
     TWITTER_TABLE: Twitter-${self:provider.stage}
+    POSTS_INDEX: PostsIndex
 
 functions:
   Auth:
     handler: src/lambda/auth/auth0Authorizer.handler
+
+  GetPosts:
+    handler: src/lambda/http/getPosts.handler
+    events:
+      - http:
+          method: get
+          path: posts
+          cors: true
+          # authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Scan
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TWITTER_TABLE}
+      - Effect: Allow
+        Action:
+          - xray:PutTraceSegments
+          - xray:PutTelemetryRecords
+        Resource: '*'
 
 resources:
   Resources:
@@ -40,10 +60,21 @@ resources:
             AttributeType: S
           - AttributeName: postId
             AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: S
         KeySchema:
           - AttributeName: userId
             KeyType: HASH
-          - AttributeName: postId
+          - AttributeName: createdAt
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.TWITTER_TABLE}
+        LocalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.POSTS_INDEX}
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH
+              - AttributeName: postId
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
