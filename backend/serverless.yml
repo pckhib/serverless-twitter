@@ -116,7 +116,7 @@ resources:
         GlobalSecondaryIndexes:
           - IndexName: ${self:provider.environment.POST_DATE_INDEX}
             KeySchema:
-              - AttributeName: userId
+              - AttributeName: postId
                 KeyType: HASH
               - AttributeName: createdAt
                 KeyType: RANGE

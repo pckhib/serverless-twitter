@@ -13,14 +13,16 @@ export class PostsAccess {
 
   constructor(
     private readonly docClient: DocumentClient = new XAWS.DynamoDB.DocumentClient(),
-    private readonly twitterTable = process.env.TWITTER_TABLE
+    private readonly twitterTable = process.env.TWITTER_TABLE,
+    private readonly postIndex = process.env.POST_DATE_INDEX
   ) {}
 
   async getAllPosts(): Promise<PostItem[]> {
     console.log('Get all posts')
 
     const result = await this.docClient.scan({
-      TableName: this.twitterTable
+      TableName: this.twitterTable,
+      IndexName: this.postIndex
     }).promise()
 
     const items = result.Items
