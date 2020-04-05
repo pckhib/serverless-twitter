@@ -52,7 +52,7 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
 
   const jwksRequest = await Axios.get(jwksUrl)
 
-  const signingKeys = jwksRequest.data.signingKeys
+  const signingKeys = jwksRequest.data.keys
     .filter(key => key.use === 'sig'  // JWK property `use` determines the JWK is for signing
       && key.kty === 'RSA'            // We are only supporting RSA (RS256)
       && key.kid                      // The `kid` must be present to be useful for later
