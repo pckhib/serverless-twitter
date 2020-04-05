@@ -6,8 +6,7 @@ import { certToPEM } from '../../utils'
 
 import 'source-map-support/register'
 
-// TODO - add Auth0 url
-const jwksUrl = ''
+const jwksUrl = 'https://pckhib.eu.auth0.com/.well-known/jwks.json'
 
 export const handler = async(event: CustomAuthorizerEvent): Promise<CustomAuthorizerResult> => {
   console.log('Authorizing a user', event.authorizationToken)
