@@ -27,7 +27,7 @@ functions:
           method: get
           path: posts
           cors: true
-          # authorizer: Auth
+          authorizer: Auth
     iamRoleStatements:
       - Effect: Allow
         Action:
