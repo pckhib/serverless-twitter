@@ -4,6 +4,7 @@ import { Router, Route, Link, Switch } from 'react-router-dom'
 import Auth from './auth/Auth'
 import { LogIn } from './components/LogIn'
 import { NotFound } from './components/NotFound'
+import { Posts } from './components/Posts'
 
 export interface AppProps {}
 
@@ -89,7 +90,7 @@ export default class App extends Component<AppProps, AppState> {
           path="/"
           exact
           render={(props) => {
-            return <div>Posts...</div>
+            return <Posts {...props} auth={this.props.auth} />
           }}
         />
 

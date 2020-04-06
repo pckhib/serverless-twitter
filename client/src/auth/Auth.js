@@ -5,6 +5,7 @@ export default class Auth {
   accessToken
   idToken
   expiresAt
+  userInfo
 
   auth0 = new auth0.WebAuth({
     domain: authConfig.domain,
@@ -52,7 +53,18 @@ export default class Auth {
     return this.idToken
   }
 
-  setSession(authResult) {
+  getUserInfo() {
+    return new Promise((resolve, reject) => {
+      this.auth0.client.userInfo(this.accessToken, (err, user) => {
+        if (err) {
+          return reject(err)
+        }
+        resolve(user.sub)
+      })
+    })
+  }
+
+  async setSession(authResult) {
     // Set isLoggedIn flag in localStorage
     localStorage.setItem('isLoggedIn', 'true')
 
@@ -61,6 +73,8 @@ export default class Auth {
     this.accessToken = authResult.accessToken
     this.idToken = authResult.idToken
     this.expiresAt = expiresAt
+
+    this.userInfo = await this.getUserInfo()
 
     // navigate to the home route
     this.history.replace('/')
