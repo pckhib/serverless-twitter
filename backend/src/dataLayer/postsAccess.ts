@@ -30,6 +30,23 @@ export class PostsAccess {
     return items as PostItem[]
   }
 
+  async getAllPostsByUser(userId: string): Promise<PostItem[]> {
+    console.log('Get all posts for user', userId)
+
+    const result = await this.docClient
+      .query({
+        TableName: this.twitterTable,
+        KeyConditionExpression: 'userId = :userId',
+        ExpressionAttributeValues: {
+          ':userId': userId,
+        },
+      })
+      .promise()
+
+    const items = result.Items
+    return items as PostItem[]
+  }
+
   async createPost(postItem: PostItem): Promise<PostItem> {
     await this.docClient
       .put({

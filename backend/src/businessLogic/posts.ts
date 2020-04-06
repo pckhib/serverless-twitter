@@ -13,6 +13,10 @@ export async function getAllPosts(): Promise<PostItem[]> {
   return postsAccess.getAllPosts()
 }
 
+export async function getAllPostsByUser(userId: string): Promise<PostItem[]> {
+  return postsAccess.getAllPostsByUser(userId)
+}
+
 export async function createPost(createPostRequest: CreatePostRequest, userId: string): Promise<PostItem> {
   const itemId = uuid.v4()
 
