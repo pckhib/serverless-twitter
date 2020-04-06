@@ -25,7 +25,21 @@ export class Posts extends React.PureComponent<PostsProps, PostsState> {
     loadingPosts: true,
   }
 
-  async componentDidMount() {
+  constructor(props: PostsProps) {
+    super(props)
+
+    this.refreshPosts = this.refreshPosts.bind(this)
+  }
+
+  componentDidMount() {
+    this.refreshPosts()
+  }
+
+  async refreshPosts() {
+    this.setState({
+      loadingPosts: true,
+    })
+
     try {
       const posts = await getPosts(this.props.auth.getIdToken())
       this.setState({
@@ -75,7 +89,15 @@ export class Posts extends React.PureComponent<PostsProps, PostsState> {
       <div>
         <Card.Group>
           {this.state.posts.map((post) => {
-            return <Post key={post.postId} {...this.props} post={post} userId={this.props.auth.userInfo} />
+            return (
+              <Post
+                key={post.postId}
+                {...this.props}
+                post={post}
+                userId={this.props.auth.userInfo}
+                refreshPosts={this.refreshPosts}
+              />
+            )
           })}
         </Card.Group>
       </div>
