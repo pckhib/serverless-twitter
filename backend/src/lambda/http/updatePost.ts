@@ -8,23 +8,25 @@ import { updatePost } from '../../businessLogic/posts'
 
 import 'source-map-support/register'
 
-export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  console.log('Processing event', event)
+export const handler = middy(
+  async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+    console.log('Processing event', event)
 
-  const postId = event.pathParameters.postId
-  const updatedPost: UpdatePostRequest = JSON.parse(event.body)
-  const userId = getUserId(event)
-  
-  await updatePost(postId, userId, updatedPost)
+    const postId = event.pathParameters.postId
+    const updatedPost: UpdatePostRequest = JSON.parse(event.body)
+    const userId = getUserId(event)
 
-  return {
-    statusCode: 200,
-    body: ''
+    await updatePost(postId, userId, updatedPost)
+
+    return {
+      statusCode: 200,
+      body: '',
+    }
   }
-})
+)
 
 handler.use(
   cors({
-    credentials: true
+    credentials: true,
   })
 )

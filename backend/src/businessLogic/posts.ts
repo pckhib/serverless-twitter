@@ -21,16 +21,13 @@ export async function createPost(createPostRequest: CreatePostRequest, userId: s
     postId: itemId,
     createdAt: new Date().toISOString(),
     title: createPostRequest.title,
-    text: createPostRequest.text
+    text: createPostRequest.text,
   })
 }
 
 export async function updatePost(postId: string, userId: string, updatePostRequest: UpdatePostRequest) {
-  return await postsAccess.updatePost(
-    postId,
-    userId,
-    {
-      title: updatePostRequest.title,
-      text: updatePostRequest.text
-    })
+  return await postsAccess.updatePost(postId, userId, {
+    title: updatePostRequest.title,
+    text: updatePostRequest.text,
+  })
 }

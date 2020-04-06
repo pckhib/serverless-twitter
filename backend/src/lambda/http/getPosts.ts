@@ -6,22 +6,24 @@ import { getAllPosts } from '../../businessLogic/posts'
 
 import 'source-map-support/register'
 
-export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  console.log('Processing event', event)
+export const handler = middy(
+  async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+    console.log('Processing event', event)
 
-  // const userId = getUserId(event)
-  const posts = await getAllPosts()
+    // const userId = getUserId(event)
+    const posts = await getAllPosts()
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      items: posts
-    })
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        items: posts,
+      }),
+    }
   }
-})
+)
 
 handler.use(
   cors({
-    credentials: true
+    credentials: true,
   })
 )
