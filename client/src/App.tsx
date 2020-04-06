@@ -6,6 +6,7 @@ import { LogIn } from './components/LogIn'
 import { NotFound } from './components/NotFound'
 import { Posts } from './components/Posts'
 import { CreatePost } from './components/CreatePost'
+import { EditPost } from './components/EditPost'
 
 export interface AppProps {}
 
@@ -100,6 +101,14 @@ export default class App extends Component<AppProps, AppState> {
           exact
           render={(props) => {
             return <CreatePost {...props} auth={this.props.auth} />
+          }}
+        />
+
+        <Route
+          path="/posts/:postId/edit"
+          exact
+          render={(props) => {
+            return <EditPost {...props} auth={this.props.auth} />
           }}
         />
 

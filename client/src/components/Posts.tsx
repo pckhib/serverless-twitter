@@ -75,7 +75,7 @@ export class Posts extends React.PureComponent<PostsProps, PostsState> {
       <div>
         <Card.Group>
           {this.state.posts.map((post) => {
-            return <Post key={post.postId} post={post} userId={this.props.auth.userInfo} />
+            return <Post key={post.postId} {...this.props} post={post} userId={this.props.auth.userInfo} />
           })}
         </Card.Group>
       </div>

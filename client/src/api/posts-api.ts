@@ -2,6 +2,7 @@ import Axios from 'axios'
 import { PostModel } from '../types/PostModel'
 import { apiEndpoint } from '../config'
 import { CreatePostRequest } from '../types/CreatePostRequest'
+import { UpdatePostRequest } from '../types/UpdatePostRequest'
 
 export async function getPosts(idToken: string): Promise<PostModel[]> {
   console.log('Fetching posts')
@@ -29,6 +30,26 @@ export async function createPost(idToken: string, newPost: CreatePostRequest): P
     },
   })
   return response.data.item
+}
+
+export async function editPost(idToken: string, updatePost: UpdatePostRequest): Promise<string> {
+  console.log('Editing post')
+
+  const response = await Axios.patch(
+    `${apiEndpoint}/posts/${updatePost.postId}`,
+    JSON.stringify({
+      title: updatePost.title,
+      text: updatePost.text,
+    }),
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${idToken}`,
+      },
+    }
+  )
+
+  return response.data
 }
 
 function sortByDate(a: PostModel, b: PostModel) {

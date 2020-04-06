@@ -1,23 +1,29 @@
 import * as React from 'react'
+import { History } from 'history'
 import Auth from '../auth/Auth'
-import { createPost } from '../api/posts-api'
+import { editPost } from '../api/posts-api'
 import { Form, TextArea, Input, Divider, Header } from 'semantic-ui-react'
+import { RouteComponentProps } from 'react-router-dom'
 
-interface CreatePostProps {
+interface EditPostProps extends RouteComponentProps {
   auth: Auth
+  history: History
+  location: any
 }
 
-interface CreatePostState {
+interface EditPostState {
   title: string
   text: string
-  uploadingPost: boolean
+  postId: string
+  updatingPost: boolean
 }
 
-export class CreatePost extends React.PureComponent<CreatePostProps, CreatePostState> {
-  state: CreatePostState = {
-    title: '',
-    text: '',
-    uploadingPost: false,
+export class EditPost extends React.PureComponent<EditPostProps, EditPostState> {
+  state: EditPostState = {
+    title: this.props.location.state.post.title,
+    text: this.props.location.state.post.text,
+    postId: this.props.location.state.post.postId,
+    updatingPost: false,
   }
 
   handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,8 +43,9 @@ export class CreatePost extends React.PureComponent<CreatePostProps, CreatePostS
         return
       }
 
-      this.setUploadState(true)
-      const post = await createPost(this.props.auth.getIdToken(), {
+      this.setUpdateState(true)
+      const post = await editPost(this.props.auth.getIdToken(), {
+        postId: this.state.postId,
         title: this.state.title,
         text: this.state.text,
       })
@@ -48,19 +55,21 @@ export class CreatePost extends React.PureComponent<CreatePostProps, CreatePostS
         text: '',
       })
 
-      console.log('Created post', post)
+      console.log('Edited post')
 
-      alert('Post was created!')
+      alert('Post was edited!')
+
+      this.props.history.goBack()
     } catch (e) {
-      alert('Could not create: ' + e.message)
+      alert('Could not edit: ' + e.message)
     } finally {
-      this.setUploadState(false)
+      this.setUpdateState(false)
     }
   }
 
-  setUploadState(uploadingPost: boolean) {
+  setUpdateState(updatingPost: boolean) {
     this.setState({
-      uploadingPost,
+      updatingPost,
     })
   }
 
@@ -68,7 +77,7 @@ export class CreatePost extends React.PureComponent<CreatePostProps, CreatePostS
     return (
       <div>
         <Header as="h1" floated="left">
-          Create Post
+          Edit Post
         </Header>
         <Divider clearing />
         {this.renderForm()}
@@ -93,8 +102,8 @@ export class CreatePost extends React.PureComponent<CreatePostProps, CreatePostS
           value={this.state.text}
           onChange={this.handleTextChange}
         ></Form.Field>
-        <Form.Button loading={this.state.uploadingPost} type="submit">
-          Create
+        <Form.Button loading={this.state.updatingPost} type="submit">
+          Update
         </Form.Button>
       </Form>
     )
