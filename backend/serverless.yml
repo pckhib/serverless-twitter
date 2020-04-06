@@ -75,12 +75,31 @@ functions:
     iamRoleStatements:
       - Effect: Allow
         Action:
-          -  dynamodb:UpdateItem
+          - dynamodb:UpdateItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TWITTER_TABLE}
       - Effect: Allow
         Action:
           - xray:PutTraceSegments
-          - xray:PutTelemetryRecords 
+          - xray:PutTelemetryRecords
+        Resource: '*'
+
+  DeletePost:
+    handler: src/lambda/http/deletePost.handler
+    events:
+      - http:
+          method: delete
+          path: posts/{postId}
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:DeleteItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TWITTER_TABLE}
+      - Effect: Allow
+        Action:
+          - xray:PutTraceSegments
+          - xray:PutTelemetryRecords
         Resource: '*'
 
 resources:

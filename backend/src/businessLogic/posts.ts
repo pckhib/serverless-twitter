@@ -31,3 +31,7 @@ export async function updatePost(postId: string, userId: string, updatePostReque
     text: updatePostRequest.text,
   })
 }
+
+export async function deletePost(postId: string, userId: string) {
+  return await postsAccess.deletePost(postId, userId)
+}

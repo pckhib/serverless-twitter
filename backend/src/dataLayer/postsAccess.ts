@@ -65,4 +65,16 @@ export class PostsAccess {
 
     return postUpdate
   }
+
+  async deletePost(postId: string, userId: string): Promise<void> {
+    await this.docClient
+      .delete({
+        TableName: this.twitterTable,
+        Key: {
+          postId: postId,
+          userId: userId,
+        },
+      })
+      .promise()
+  }
 }
