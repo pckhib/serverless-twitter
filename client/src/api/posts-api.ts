@@ -32,10 +32,10 @@ export async function createPost(idToken: string, newPost: CreatePostRequest): P
   return response.data.item
 }
 
-export async function editPost(idToken: string, updatePost: UpdatePostRequest): Promise<string> {
+export async function editPost(idToken: string, updatePost: UpdatePostRequest): Promise<void> {
   console.log('Editing post')
 
-  const response = await Axios.patch(
+  await Axios.patch(
     `${apiEndpoint}/posts/${updatePost.postId}`,
     JSON.stringify({
       title: updatePost.title,
@@ -48,8 +48,17 @@ export async function editPost(idToken: string, updatePost: UpdatePostRequest): 
       },
     }
   )
+}
 
-  return response.data
+export async function deletePost(idToken: string, postId: string): Promise<void> {
+  console.log('Delete post')
+
+  await Axios.delete(`${apiEndpoint}/posts/${postId}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
+    },
+  })
 }
 
 function sortByDate(a: PostModel, b: PostModel) {
