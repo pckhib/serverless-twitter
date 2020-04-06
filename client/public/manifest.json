@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Serverless Twitter",
+  "name": "Twitter clone using Serverless framework",
   "icons": [
     {
       "src": "favicon.ico",
