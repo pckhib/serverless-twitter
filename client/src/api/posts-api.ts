@@ -1,6 +1,7 @@
 import Axios from 'axios'
 import { PostModel } from '../types/PostModel'
 import { apiEndpoint } from '../config'
+import { CreatePostRequest } from '../types/CreatePostRequest'
 
 export async function getPosts(idToken: string): Promise<PostModel[]> {
   console.log('Fetching posts')
@@ -16,6 +17,18 @@ export async function getPosts(idToken: string): Promise<PostModel[]> {
 
   console.log('Posts: ', sortedItems)
   return sortedItems
+}
+
+export async function createPost(idToken: string, newPost: CreatePostRequest): Promise<PostModel> {
+  console.log('Creating post')
+
+  const response = await Axios.post(`${apiEndpoint}/posts`, JSON.stringify(newPost), {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
+    },
+  })
+  return response.data.item
 }
 
 function sortByDate(a: PostModel, b: PostModel) {

@@ -11,8 +11,12 @@ interface PostCardState {}
 
 export class Post extends React.PureComponent<PostCardProps, PostCardState> {
   render() {
+    let cardProps = {}
+    if (this.props.userId === this.props.post.userId) {
+      cardProps = { color: 'green' }
+    }
     return (
-      <Card fluid>
+      <Card fluid {...cardProps}>
         <Card.Content>
           <Card.Header>{this.props.post.title}</Card.Header>
           <Card.Meta>{this.props.post.createdAt}</Card.Meta>

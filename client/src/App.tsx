@@ -5,6 +5,7 @@ import Auth from './auth/Auth'
 import { LogIn } from './components/LogIn'
 import { NotFound } from './components/NotFound'
 import { Posts } from './components/Posts'
+import { CreatePost } from './components/CreatePost'
 
 export interface AppProps {}
 
@@ -91,6 +92,14 @@ export default class App extends Component<AppProps, AppState> {
           exact
           render={(props) => {
             return <Posts {...props} auth={this.props.auth} />
+          }}
+        />
+
+        <Route
+          path="/posts/create"
+          exact
+          render={(props) => {
+            return <CreatePost {...props} auth={this.props.auth} />
           }}
         />
 

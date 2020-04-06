@@ -3,8 +3,9 @@ import { History } from 'history'
 import Auth from '../auth/Auth'
 import { PostModel } from '../types/PostModel'
 import { getPosts } from '../api/posts-api'
-import { Header, Grid, Loader, Divider, Card } from 'semantic-ui-react'
+import { Header, Grid, Loader, Divider, Card, Button } from 'semantic-ui-react'
 import { Post } from './Post'
+import { Link } from 'react-router-dom'
 
 interface PostsProps {
   auth: Auth
@@ -26,7 +27,7 @@ export class Posts extends React.PureComponent<PostsProps, PostsState> {
 
   async componentDidMount() {
     try {
-      const posts = await getPosts(this.props.auth.idToken)
+      const posts = await getPosts(this.props.auth.getIdToken())
       this.setState({
         posts,
         loadingPosts: false,
@@ -39,7 +40,12 @@ export class Posts extends React.PureComponent<PostsProps, PostsState> {
   render() {
     return (
       <div>
-        <Header as="h1">Posts</Header>
+        <Header as="h1" floated="left">
+          Posts
+        </Header>
+        <Button primary floated="right" as={Link} to="/posts/create">
+          Create Post
+        </Button>
         <Divider clearing />
         {this.renderPosts()}
       </div>
@@ -58,7 +64,7 @@ export class Posts extends React.PureComponent<PostsProps, PostsState> {
     return (
       <Grid.Row>
         <Loader indeterminate active inline="centered">
-          Loading POSTs
+          Loading Posts
         </Loader>
       </Grid.Row>
     )
