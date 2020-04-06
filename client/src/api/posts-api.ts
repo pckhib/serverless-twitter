@@ -20,6 +20,22 @@ export async function getPosts(idToken: string): Promise<PostModel[]> {
   return sortedItems
 }
 
+export async function getUserPosts(userId: string, idToken: string): Promise<PostModel[]> {
+  console.log('Fetching user posts', userId)
+
+  const response = await Axios.get(`${apiEndpoint}/users/${userId}/posts`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
+    },
+  })
+
+  const sortedItems = response.data.items.sort(sortByDate)
+
+  console.log('Posts: ', sortedItems)
+  return sortedItems
+}
+
 export async function createPost(idToken: string, newPost: CreatePostRequest): Promise<PostModel> {
   console.log('Creating post')
 

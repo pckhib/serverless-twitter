@@ -44,7 +44,7 @@ export class EditPost extends React.PureComponent<EditPostProps, EditPostState> 
       }
 
       this.setUpdateState(true)
-      const post = await editPost(this.props.auth.getIdToken(), {
+      await editPost(this.props.auth.getIdToken(), {
         postId: this.state.postId,
         title: this.state.title,
         text: this.state.text,

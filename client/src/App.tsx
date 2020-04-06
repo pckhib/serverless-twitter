@@ -59,6 +59,11 @@ export default class App extends Component<AppProps, AppState> {
         <Menu.Item name="home">
           <Link to="/">Home</Link>
         </Menu.Item>
+        {this.props.auth.isAuthenticated() && (
+          <Menu.Item name="myPosts">
+            <Link to="/myPosts">My Posts</Link>
+          </Menu.Item>
+        )}
 
         <Menu.Menu position="right">{this.logInLogOutButton()}</Menu.Menu>
       </Menu>
@@ -92,7 +97,15 @@ export default class App extends Component<AppProps, AppState> {
           path="/"
           exact
           render={(props) => {
-            return <Posts {...props} auth={this.props.auth} />
+            return <Posts key="allPosts" {...props} userPosts={false} auth={this.props.auth} />
+          }}
+        />
+
+        <Route
+          path="/myPosts"
+          exact
+          render={(props) => {
+            return <Posts key="myPosts" {...props} userPosts={true} auth={this.props.auth} />
           }}
         />
 
