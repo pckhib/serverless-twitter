@@ -77,6 +77,20 @@ export async function deletePost(idToken: string, postId: string): Promise<void>
   })
 }
 
+export async function getUploadUrl(idToken: string, postId: string): Promise<string> {
+  const response = await Axios.post(`${apiEndpoint}/posts/${postId}/image`, '', {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
+    },
+  })
+  return response.data.uploadUrl
+}
+
+export async function uploadFile(uploadUrl: string, file: Buffer): Promise<void> {
+  await Axios.put(uploadUrl, file)
+}
+
 function sortByDate(a: PostModel, b: PostModel) {
   const timeA = new Date(a.createdAt).getTime()
   const timeB = new Date(b.createdAt).getTime()

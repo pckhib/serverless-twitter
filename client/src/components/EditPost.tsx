@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { History } from 'history'
 import Auth from '../auth/Auth'
-import { editPost } from '../api/posts-api'
+import { editPost, getUploadUrl, uploadFile } from '../api/posts-api'
 import { Form, TextArea, Input, Divider, Header } from 'semantic-ui-react'
 import { RouteComponentProps } from 'react-router-dom'
 
@@ -15,6 +15,7 @@ interface EditPostState {
   title: string
   text: string
   postId: string
+  file: any
   updatingPost: boolean
 }
 
@@ -23,6 +24,7 @@ export class EditPost extends React.PureComponent<EditPostProps, EditPostState> 
     title: this.props.location.state.post.title,
     text: this.props.location.state.post.text,
     postId: this.props.location.state.post.postId,
+    file: undefined,
     updatingPost: false,
   }
 
@@ -32,6 +34,15 @@ export class EditPost extends React.PureComponent<EditPostProps, EditPostState> 
 
   handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     this.setState({ text: event.target.value })
+  }
+
+  handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files
+    if (!files) return
+
+    this.setState({
+      file: files[0],
+    })
   }
 
   handleSubmit = async (event: React.SyntheticEvent) => {
@@ -44,6 +55,13 @@ export class EditPost extends React.PureComponent<EditPostProps, EditPostState> 
       }
 
       this.setUpdateState(true)
+
+      if (this.state.file) {
+        const uploadUrl = await getUploadUrl(this.props.auth.getIdToken(), this.state.postId)
+
+        await uploadFile(uploadUrl, this.state.file)
+      }
+
       await editPost(this.props.auth.getIdToken(), {
         postId: this.state.postId,
         title: this.state.title,
@@ -53,6 +71,7 @@ export class EditPost extends React.PureComponent<EditPostProps, EditPostState> 
       this.setState({
         title: '',
         text: '',
+        file: undefined,
       })
 
       console.log('Edited post')
@@ -102,6 +121,10 @@ export class EditPost extends React.PureComponent<EditPostProps, EditPostState> 
           value={this.state.text}
           onChange={this.handleTextChange}
         ></Form.Field>
+        <Form.Field>
+          <label>File</label>
+          <input type="file" accept="image/*" placeholder="Image to upload" onChange={this.handleFileChange} />
+        </Form.Field>
         <Form.Button loading={this.state.updatingPost} type="submit">
           Update
         </Form.Button>

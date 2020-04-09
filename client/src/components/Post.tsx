@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { History } from 'history'
 import { PostModel } from '../types/PostModel'
-import { Card, Icon } from 'semantic-ui-react'
+import { Card, Icon, Image } from 'semantic-ui-react'
 import { deletePost } from '../api/posts-api'
 import Auth from '../auth/Auth'
 
@@ -38,6 +38,7 @@ export class Post extends React.PureComponent<PostCardProps, PostCardState> {
     }
     return (
       <Card fluid {...cardProps}>
+        {this.props.post.hasOwnProperty('imageUrl') && <Image wrapped ui={false} src={this.props.post.imageUrl} />}
         <Card.Content>
           <Card.Header>{this.props.post.title}</Card.Header>
           <Card.Meta>{this.props.post.createdAt}</Card.Meta>

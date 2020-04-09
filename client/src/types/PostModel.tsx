@@ -4,4 +4,5 @@ export interface PostModel {
   createdAt: string
   title: string
   text: string
+  imageUrl?: string
 }
