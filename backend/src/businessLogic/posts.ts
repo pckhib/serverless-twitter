@@ -39,3 +39,12 @@ export async function updatePost(postId: string, userId: string, updatePostReque
 export async function deletePost(postId: string, userId: string) {
   return await postsAccess.deletePost(postId, userId)
 }
+
+export async function generateUploadUrl(postId: string, userId: string) {
+  const uploadUrl = postsAccess.generateUploadUrl(postId)
+
+  console.log('Add image url to post', postId)
+  await postsAccess.addImageUrl(postId, userId)
+
+  return uploadUrl
+}

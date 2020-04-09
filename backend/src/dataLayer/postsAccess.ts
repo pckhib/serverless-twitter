@@ -12,8 +12,11 @@ const XAWS = AWSXRay.captureAWS(AWS)
 export class PostsAccess {
   constructor(
     private readonly docClient: DocumentClient = new XAWS.DynamoDB.DocumentClient(),
+    private readonly s3 = new XAWS.S3({ signatureVersion: 'v4' }),
     private readonly twitterTable = process.env.TWITTER_TABLE,
-    private readonly postIndex = process.env.POST_DATE_INDEX
+    private readonly postIndex = process.env.POST_DATE_INDEX,
+    private readonly s3Bucket = process.env.IMAGES_S3_BUCKET,
+    private readonly urlExpiration = process.env.SIGNED_URL_EXPIRATION
   ) {}
 
   async getAllPosts(): Promise<PostItem[]> {
@@ -93,5 +96,34 @@ export class PostsAccess {
         },
       })
       .promise()
+  }
+
+  async addImageUrl(postId: string, userId: string) {
+    const imageUrl = `https://${this.s3Bucket}.s3.amazonaws.com/${postId}`
+
+    await this.docClient
+      .update({
+        TableName: this.twitterTable,
+        Key: {
+          postId: postId,
+          userId: userId,
+        },
+        UpdateExpression: 'set #imageUrl = :imageUrl',
+        ExpressionAttributeNames: {
+          '#imageUrl': 'imageUrl',
+        },
+        ExpressionAttributeValues: {
+          ':imageUrl': imageUrl,
+        },
+      })
+      .promise()
+  }
+
+  generateUploadUrl(postId: string): string {
+    return this.s3.getSignedUrl('putObject', {
+      Bucket: this.s3Bucket,
+      Key: postId,
+      Expires: this.urlExpiration,
+    })
   }
 }
