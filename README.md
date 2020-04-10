@@ -12,7 +12,23 @@ In order to deploy the backend run the following command inside the `backend` di
 serverless deploy -v
 ```
 
-## Run client
+## Client
+
+### Configure
+
+The Client application uses Auth0 to authenticate with the service. Therefore you need to create an [Auth0 account](https://auth0.com/) and afterwards a new application.
+
+To have a connection to the backend, provide the `apiId` and Auth0 configuration in the config file.
+
+```
+// client/src/config.ts
+
+const apiId = '' // AWS apiId created by Serverless framework
+const auth0Domain = '' // Domain of your Auth0 account
+const auth0ClientId = '' // ClientId of your Auth0 application
+```
+
+### Run
 
 To run the React client run the following command inside the `client` directory. This will start a development server.
 
