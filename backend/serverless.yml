@@ -6,6 +6,10 @@ plugins:
   - serverless-iam-roles-per-function
 
 provider:
+  tracing:
+    apiGateway: true
+    lambda: true
+
   name: aws
   runtime: nodejs12.x
 
