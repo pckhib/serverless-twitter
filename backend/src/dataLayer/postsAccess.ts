@@ -51,6 +51,8 @@ export class PostsAccess {
   }
 
   async createPost(postItem: PostItem): Promise<PostItem> {
+    console.log('Create new post', postItem)
+
     await this.docClient
       .put({
         TableName: this.twitterTable,
@@ -87,6 +89,8 @@ export class PostsAccess {
   }
 
   async deletePost(postId: string, userId: string): Promise<void> {
+    console.log('Delete post', postId)
+
     await this.docClient
       .delete({
         TableName: this.twitterTable,
@@ -100,6 +104,8 @@ export class PostsAccess {
 
   async addImageUrl(postId: string, userId: string) {
     const imageUrl = `https://${this.s3Bucket}.s3.amazonaws.com/${postId}`
+
+    console.log(`Add imageUrl ${imageUrl} to post ${postId}`)
 
     await this.docClient
       .update({
@@ -120,6 +126,8 @@ export class PostsAccess {
   }
 
   generateUploadUrl(postId: string): string {
+    console.log('Generate S3 upload url for post', postId)
+
     return this.s3.getSignedUrl('putObject', {
       Bucket: this.s3Bucket,
       Key: postId,
