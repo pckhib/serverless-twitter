@@ -116,8 +116,8 @@ POST /posts
 
 ```javascript
 {
-	"title": string,
-	"text": string
+  "title": string,
+  "text": string
 }
 ```
 
@@ -151,8 +151,8 @@ PATCH /posts/{postId}
 
 ```javascript
 {
-	"title": string,
-	"text": string
+  "title": string,
+  "text": string
 }
 ```
 
