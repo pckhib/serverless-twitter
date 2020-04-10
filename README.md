@@ -4,6 +4,14 @@ This application is a Twitter-like clone using AWS Lambda and Serverless framewo
 
 It consists of the `backend` and an additional `client` implemented with React.
 
+## Functionality
+
+As a user you are able to see all posts that have been created so far. This includes your own posts and all posts created by others.
+
+You can also only have a list of your own posts.
+
+Own posts, which are highlighted with a green color, can be edited or deleted. Once you edit a post, there's the possibility to upload an image which will be displayed together with the post.
+
 ## Deploy backend
 
 In order to deploy the backend run the following command inside the `backend` directory:
